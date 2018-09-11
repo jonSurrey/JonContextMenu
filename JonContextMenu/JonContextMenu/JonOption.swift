@@ -13,7 +13,7 @@ open class JonAction:UIView {
     
     var angle: CGFloat = 0
     
-    var title:String = ""
+    open var title:String = ""
     
     //// The button of the menu
     let button: UIButton = {
@@ -35,12 +35,12 @@ open class JonAction:UIView {
             button.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             button.heightAnchor .constraint(equalToConstant: 45),
             button.widthAnchor  .constraint(equalToConstant: 45)
-            ])
+        ])
     }
     
-    init(title:String, icon:UIImage?){
+    public init(title:String, icon:UIImage?){
         super.init(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-        button.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(icon?.resize(to:20)?.withRenderingMode(.alwaysTemplate), for: .normal)
         self.title = title
         setupConstraints()
     }
