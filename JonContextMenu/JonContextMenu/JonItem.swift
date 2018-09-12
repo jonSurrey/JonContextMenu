@@ -11,14 +11,25 @@ import Foundation
 
 open class JonItem:UIView {
     
-    /// The angle that the item will appear
-    var angle: CGFloat = 0
-    
     /// The title of the item
     open var title:String = ""
     
-    //// The button that represents the item
-    let button: UIButton = {
+    /// The angle that the item will appear
+    var angle: CGFloat = 0
+    
+    /// Indicates if the item is active
+    var isActive:Bool = false
+    
+    /// The icon  of the button
+    private let icon: UIImageView = {
+        let icon = UIImageView()
+        icon.contentMode = .scaleAspectFit
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        return icon
+    }()
+    
+    /// The button that represents the item
+    private let button: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0 , width: 45, height: 45))
         button.fullCircle = true
         button.addDropShadow()
@@ -26,24 +37,41 @@ open class JonItem:UIView {
         return button
     }()
     
+    /// The warpper for the button and icon
+    let wrapper: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0 , width: 45, height: 45))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     /// Adds the constraints to the views
     private func setupConstraints(){
         
-        self.addSubview(button)
+        wrapper.addSubview(button)
+        wrapper.addSubview(icon)
+        self.addSubview(wrapper)
         NSLayoutConstraint.activate([
-            button.topAnchor     .constraint(equalTo: self.topAnchor     ),
-            button.bottomAnchor  .constraint(equalTo: self.bottomAnchor  ),
-            button.leadingAnchor .constraint(equalTo: self.leadingAnchor ),
-            button.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            button.heightAnchor .constraint(equalToConstant: 45),
-            button.widthAnchor  .constraint(equalToConstant: 45)
+            icon.heightAnchor .constraint(equalToConstant: 20),
+            icon.widthAnchor  .constraint(equalToConstant: 20),
+            icon.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+            icon.centerXAnchor.constraint(equalTo: button.centerXAnchor),
+
+            button.topAnchor     .constraint(equalTo: wrapper.topAnchor     ),
+            button.bottomAnchor  .constraint(equalTo: wrapper.bottomAnchor  ),
+            button.leadingAnchor .constraint(equalTo: wrapper.leadingAnchor ),
+            button.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor),
+            
+            wrapper.topAnchor     .constraint(equalTo: self.topAnchor     ),
+            wrapper.bottomAnchor  .constraint(equalTo: self.bottomAnchor  ),
+            wrapper.leadingAnchor .constraint(equalTo: self.leadingAnchor ),
+            wrapper.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
     }
     
     public init(title:String, icon:UIImage?){
         super.init(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
-        button.setImage(icon?.resize(to:20)?.withRenderingMode(.alwaysTemplate), for: .normal)
-        self.title = title
+        self.title      = title
+        self.icon.image = icon
         setupConstraints()
     }
     
@@ -54,5 +82,20 @@ open class JonItem:UIView {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// Changes the colours of the button and the icon
+    func setItemColorTo(_ itemColour:UIColor, iconColor:UIColor?=nil){
+        if let colour = iconColor{
+            let templateImage = icon.image?.withRenderingMode(.alwaysTemplate)
+            icon.image     = templateImage
+            icon.tintColor = colour
+        }
+        else{
+            let templateImage = icon.image?.withRenderingMode(.alwaysOriginal)
+            icon.image     = templateImage
+            icon.tintColor = nil
+        }
+        button.backgroundColor = itemColour
     }
 }

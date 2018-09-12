@@ -23,8 +23,9 @@ class JonContextMenuView:UIView {
     /// The title label that display the name of the touched icon
     let label: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.alpha = 0.0
         label.numberOfLines = 1
+        label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -71,7 +72,7 @@ class JonContextMenuView:UIView {
         self.touchPoint = touchPoint
         
         touchPointView   = makeTouchPoint()
-        currentDirection = calculateDirections(properties.items[0].button.frame.width)
+        currentDirection = calculateDirections(properties.items[0].wrapper.frame.width)
         
         addSubviews()
         configureViews()
@@ -90,10 +91,10 @@ class JonContextMenuView:UIView {
         ])
         
         if touchPoint.y > UIScreen.main.bounds.height/2{
-            label.frame = CGRect(x: 20, y: touchPoint.y - 200, width: UIScreen.main.bounds.width/1.2, height: 100)
+            label.frame = CGRect(x: 20, y: touchPoint.y - 190, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         else{
-            label.frame = CGRect(x: 20, y: touchPoint.y + 100, width: UIScreen.main.bounds.width/1.2, height: 100)
+            label.frame = CGRect(x: 20, y: touchPoint.y + 90, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         
         self.addSubview(label)
@@ -105,8 +106,7 @@ class JonContextMenuView:UIView {
         
         /// Sets the default colour of the items
         properties.items.forEach({
-            $0.button.tintColor       = properties.iconsDefaultColor
-            $0.button.backgroundColor = properties.buttonsDefaultColor
+            $0.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
         })
         
         /// Sets the touch point colour
@@ -152,14 +152,14 @@ class JonContextMenuView:UIView {
     /// Sets the menu items' position to the user's touch position
     private func resetItemsPosition() {
         properties.items.forEach({
-            $0.center  = touchPoint
+            $0.center = touchPoint
         })
     }
     
     /// Calculates the distance from the user's touch location to the menu items
     private func calculateDistanceToItem() {
-        xDistanceToItem = touchPointView.frame.width/2  + distanceToTouchPoint + CGFloat(properties.items[0].button.frame.width/2)
-        yDistanceToItem = touchPointView.frame.height/2 + distanceToTouchPoint + CGFloat(properties.items[0].button.frame.height/2)
+        xDistanceToItem = touchPointView.frame.width/2  + distanceToTouchPoint + CGFloat(properties.items[0].frame.width/2)
+        yDistanceToItem = touchPointView.frame.height/2 + distanceToTouchPoint + CGFloat(properties.items[0].frame.height/2)
     }
     
     /// Calculates which direction the menu items shoud appear
@@ -168,14 +168,14 @@ class JonContextMenuView:UIView {
         let touchWidth  = distanceToTouchPoint + menuItemWidth + touchPointView.frame.width
         let touchHeight = distanceToTouchPoint + menuItemWidth + touchPointView.frame.height
         
-        let verticalDirection   = determineVerticalDirection  (touchHeight, superViewFrame: self.frame)
-        let horisontalDirection = determineHorisontalDirection(touchWidth , superViewFrame: self.frame)
+        let verticalDirection   = determineVerticalDirection  (touchHeight)
+        let horisontalDirection = determineHorisontalDirection(touchWidth )
         
         return(verticalDirection, horisontalDirection)
     }
     
     /// Calculates the vertical point that the user touched on the screen
-    private func determineVerticalDirection(_ size: CGFloat, superViewFrame: CGRect) -> Direction {
+    private func determineVerticalDirection(_ size: CGFloat) -> Direction {
         
         let isBotomBorderOfScreen = touchPoint.y + size > UIScreen.main.bounds.height
         let isTopBorderOfScreen   = touchPoint.y - size < 0
@@ -190,7 +190,7 @@ class JonContextMenuView:UIView {
     }
     
     /// Calculates the horizontal point that the user touched on the screen
-    private func determineHorisontalDirection(_ size: CGFloat, superViewFrame: CGRect) -> Direction {
+    private func determineHorisontalDirection(_ size: CGFloat) -> Direction {
         
         let isRightBorderOfScreen = touchPoint.x + size > UIScreen.main.bounds.width
         let isLeftBorderOfScreen  = touchPoint.x - size < 0
@@ -261,22 +261,42 @@ class JonContextMenuView:UIView {
     }
     
     /// Animates the menu items to appear at the calculated positions
-    private func animateItem(_ action: JonItem) {
+    private func animateItem(_ item: JonItem) {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
-            action.center = self.calculatePointCoordiantes(action.angle)
+            item.center = self.calculatePointCoordiantes(item.angle)
         }, completion: nil)
     }
     
-    /// Displays the title label
-    func showTitle(_ title:String?){
-        self.label.text = title
-        self.label.alpha = 1.0
+    /// Activates the selected menu item
+    func activate(_ item:JonItem){
+        
+        item.isActive = true
+        item.setItemColorTo(properties.buttonsActiveColor, iconColor: properties.iconsActiveColor)
+
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 20)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 20)
+        
+        self.label.text = item.title
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
+            self.label.alpha = 1.0
+            item.wrapper.center    = CGPoint(x: newX, y: newY)
+            item.wrapper.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }, completion: nil)
     }
     
-    /// Hides the title label
-    func hideLabel(){
+    /// Deactivate the  item
+    func deactivate(_ item:JonItem){
+        
+        item.isActive = false
+        item.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
+        
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -20)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -20)
+        
         UIView.animate(withDuration: 0.2, animations: {
             self.label.alpha = 0.0
+            item.wrapper.center    = CGPoint(x: newX, y: newY)
+            item.wrapper.transform = CGAffineTransform.identity
         })
     }
 }

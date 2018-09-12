@@ -56,7 +56,7 @@ class ViewController: UITableViewController {
     
     private var options:[JonItem] = []
     
-    private var contextMenu:JonContextMenu!
+    //private var contextMenu:JonContextMenu!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,40 +97,39 @@ class ViewController: UITableViewController {
                    JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
                    JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
         
+        var contextMenu:JonContextMenu!
         switch indexPath.row {
             case 1:
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setBackgroundColorTo(green)
-                    .setItemsDefaultColorTo(blue, andIconsTo: .white)
-                    .setItemsActiveColorTo(orange, andIconsTo: .white)
+                    .setItemsDefaultColorTo(blue)
+                    .setItemsActiveColorTo(orange)
                     .setItemsTitleColorTo(.black)
             case 2:
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setBackgroundColorTo(orange)
-                    .setItemsDefaultColorTo(green, andIconsTo: .white)
-                    .setItemsActiveColorTo(blue, andIconsTo: .white)
+                    .setItemsDefaultColorTo(green)
+                    .setItemsActiveColorTo(blue)
                     .setItemsTitleColorTo(.white)
             case 3:
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setBackgroundColorTo(blue)
-                    .setItemsDefaultColorTo(orange, andIconsTo: .white)
-                    .setItemsActiveColorTo(green, andIconsTo: .white)
+                    .setItemsDefaultColorTo(orange)
+                    .setItemsActiveColorTo(green)
                     .setItemsTitleColorTo(.white)
                     .setItemsTitleSizeTo(32)
             case 4:
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setDelegate(self)
-                    .setItemsDefaultColorTo(andIconsTo: .darkGray)
-                    .setItemsActiveColorTo(andIconsTo: .white)
+                    .setIconsDefaultColorTo(.darkGray)
             default:
                 contextMenu = JonContextMenu()
                     .setItems(options)
-                    .setItemsDefaultColorTo(andIconsTo: .darkGray)
-                    .setItemsActiveColorTo(andIconsTo: .white)
+                    .setIconsDefaultColorTo(.darkGray)
         }
         
         cell.configureCell(items[indexPath.row], contextMenu: contextMenu)

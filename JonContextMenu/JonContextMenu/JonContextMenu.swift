@@ -35,31 +35,26 @@ open class JonContextMenu{
     /// The items' buttons default colour
     var buttonsDefaultColor:UIColor = .white
     
+    /// The items' buttons active colour
+    var buttonsActiveColor:UIColor = UIColor.init(hexString: "#c62828") // Red
+    
     /// The items' icons default colour
     var iconsDefaultColor:UIColor?
-    
-    /// The items' buttons active colour
-    var buttonsActiveColor:UIColor = UIColor.init(hexString: "#9a0007") //Red
     
     /// The items' icons active colour
     var iconsActiveColor:UIColor?
     
     /// The size of the title of the menu items
-    var itemsTitleSize:CGFloat = 64
+    var itemsTitleSize:CGFloat = 72
     
     /// The colour of the title of the menu items
-    var itemsTitleColor:UIColor = .darkGray
+    var itemsTitleColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
     
     /// The colour of the touch location view
-    var touchPointColor:UIColor = .darkGray
+    var touchPointColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
     
     public init(){
         
-    }
-    
-    /// Builds the JonContextMenu
-    open func build()->Builder{
-        return Builder(self)
     }
     
     /// Sets the items for the JonContextMenu
@@ -80,18 +75,28 @@ open class JonContextMenu{
         self.backgroundColor = backgroundColor
         return self
     }
-
-    /// Sets the buttons and icons default colour of the JonContextMenu
-    open func setItemsDefaultColorTo(_ buttonsColor: UIColor? = nil, andIconsTo iconsColor:UIColor? = nil)->JonContextMenu{
-        self.iconsDefaultColor   = iconsColor
-        self.buttonsDefaultColor = buttonsColor ?? .white
+    
+    /// Sets the colour of the buttons for when there is no interaction
+    open func setItemsDefaultColorTo(_ colour: UIColor)->JonContextMenu{
+        self.buttonsDefaultColor = colour
         return self
     }
-
-    /// Sets the buttons and icons active colour of the JonContextMenu
-    open func setItemsActiveColorTo(_ buttonsColor: UIColor? = nil, andIconsTo iconsColor:UIColor? = nil)->JonContextMenu{
-        self.iconsActiveColor   = iconsColor
-        self.buttonsActiveColor = buttonsColor ?? UIColor.init(hexString: "#9a0007")
+    
+    /// Sets the colour of the buttons for when there is interaction
+    open func setItemsActiveColorTo(_ colour: UIColor)->JonContextMenu{
+        self.buttonsActiveColor = colour
+        return self
+    }
+    
+    /// Sets the colour of the icons for when there is no interaction
+    open func setIconsDefaultColorTo(_ colour: UIColor?)->JonContextMenu{
+        self.iconsDefaultColor = colour
+        return self
+    }
+    
+    /// Sets the colour of the icons for when there is interaction
+    open func setIconsActiveColorTo(_ colour: UIColor?)->JonContextMenu{
+        self.iconsActiveColor = colour
         return self
     }
     
@@ -111,6 +116,11 @@ open class JonContextMenu{
     open func setTouchPointColorTo(_ color: UIColor)->JonContextMenu{
         self.touchPointColor = color
         return self
+    }
+    
+    /// Builds the JonContextMenu
+    open func build()->Builder{
+        return Builder(self)
     }
     
     open class Builder:UILongPressGestureRecognizer{
@@ -177,25 +187,22 @@ open class JonContextMenu{
         
         // Triggers the events for when the touch moves
         private func longPressMoved(to location:CGPoint) {
-            if let current = currentItem, current.frame.contains(location){
-                if !isItemActive{
-                    activate(current)
-                    if let index = properties.items.index(of: current){
-                        properties.delegate?.menuItemWasActivated(current, atIndex: index)
+            if let currentItem = currentItem, currentItem.frame.contains(location){
+                if !currentItem.isActive{
+                    contextMenuView.activate(currentItem)
+                    if let index = properties.items.index(of: currentItem){
+                        properties.delegate?.menuItemWasActivated(currentItem, atIndex: index)
                     }
                 }
             }
             else{
-                if isItemActive{
-                    deactivate(currentItem)
-                    contextMenuView.hideLabel()
-                    
-                    currentItem = nil
+                if let currentItem = currentItem, currentItem.isActive{
+                    contextMenuView.deactivate(currentItem)
                     properties.delegate?.menuItemWasDeactivated()
                 }
-                for action in properties.items{
-                    if action.frame.contains(location){
-                        currentItem = action
+                for item in properties.items{
+                    if item.frame.contains(location){
+                        currentItem = item
                         break
                     }
                 }
@@ -211,35 +218,13 @@ open class JonContextMenu{
         
         /// Removes the JonContextMenu view from the Window
         private func dismissMenu(){
+            if let currentItem = currentItem{
+                contextMenuView.deactivate(currentItem)
+            }
+    
             contextMenuView.removeFromSuperview()
             properties.delegate?.menuClosed()
-        }
-        
-        /// Activates the selected menu item
-        private func activate(_ item:JonItem){
-            isItemActive = true
-            item.button.tintColor       = properties.iconsActiveColor
-            item.button.backgroundColor = properties.buttonsActiveColor
-            
-            contextMenuView.showTitle(item.title)
-            UIView.animate(withDuration: 0.2, animations: {
-                item.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            })
-        }
-        
-        /// Deactivate the selected menu item
-        private func deactivate(_ item:JonItem?){
-            guard let item = item else {
-                return
-            }
-            
-            isItemActive = false
-            item.button.tintColor       = properties.iconsDefaultColor
-            item.button.backgroundColor = properties.buttonsDefaultColor
-            
-            UIView.animate(withDuration: 0.2, animations: {
-                item.transform = CGAffineTransform.identity
-            })
+            contextMenuView = nil
         }
     }
 }
