@@ -23,9 +23,10 @@ let items = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
 // Then, create an instance of JonContextMenu setting your array to it.
 let contextMenu = JonContextMenu().setItems(options).build()
 
-// Finally, add the "contextMenu" to the view that will show the context menu
+// Finally, add the "contextMenu" to the view you wish.
 <<YOURVIEW>>.addGestureRecognizer(contextMenu)
 ```
+To show the menu, just long press the view you set the JonContextMenu.
 
 ### Delegates
 
@@ -63,11 +64,11 @@ let contextMenu = JonContextMenu()
 Custom Configuration
 ===========
 
-The default visual configuration for JonContextMenu will probably be enough for you, but if you wish to make a few custom modification the library has some functions that allow you to personalize it as you wish.
+The default visual configuration for JonContextMenu will probably be enough for you, but if you wish to make a few custom modification, the library has some functions that allow you to personalize it as you wish.
 
 ```swift
 JonContextMenu()
-// The numbe rof items to be displayed, it can be up to 8 items.
+// The number of items to be displayed, it can be up to 8 items.
 .setItems(options)
 // The delegate to notify when an item is selected.
 .setDelegate(self)
@@ -75,11 +76,13 @@ JonContextMenu()
 .setBackgroundColorTo(.white, withAlpha: 0.5)
 // The idle colour of the items(when there is no interaction). The default colour is white
 .setItemsDefaultColorTo(.black)
-// The idle colour of the items' icon(when there is no interaction). The default colour is darkGray
+// The idle colour of the items' icon(when there is no interaction).  There is no deafault colour. 
+// If you don't set it, the icon will have no tint colour and will display the original image's colour
 .setIconsDefaultColorTo(.white)
 // The active colour of the items(when there is interaction). The default colour is darkRed
 .setItemsActiveColorTo(.white)
-// The active colour of the items' icon(when there is interaction). The default colour is white
+// The active colour of the items' icon(when there is interaction). There is no deafault colour. 
+// If you don't set it, the icon will have no tint colour and will display the original image's colour
 .setIconsActiveColorTo(.black)
 // The colour of the title of the items. The default colour is darkGray
 .setItemsTitleColorTo(.black)
