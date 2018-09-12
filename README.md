@@ -20,7 +20,7 @@ let items = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
              JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
              JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
 
-// Then, create an instance of JonContextMenu setting your array to the items to be displayed
+// Then, create an instance of JonContextMenu setting your array to it.
 let contextMenu = JonContextMenu().setItems(options).build()
 
 // Finally, add the "contextMenu" to the view that will show the context menu
