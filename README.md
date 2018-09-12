@@ -68,26 +68,36 @@ The default visual configuration for JonContextMenu will probably be enough for 
 
 ```swift
 JonContextMenu()
+
 // The number of items to be displayed, it can be up to 8 items.
 .setItems(options)
+
 // The delegate to notify when an item is selected.
 .setDelegate(self)
+
 // The background colour of the view. The default colour is white and the default alpha is 0.9
 .setBackgroundColorTo(.white, withAlpha: 0.5)
+
 // The idle colour of the items(when there is no interaction). The default colour is white
 .setItemsDefaultColorTo(.black)
+
 // The idle colour of the items' icon(when there is no interaction).  There is no deafault colour. 
 // If you don't set it, the icon will have no tint colour and will display the original image's colour
 .setIconsDefaultColorTo(.white)
+
 // The active colour of the items(when there is interaction). The default colour is darkRed
 .setItemsActiveColorTo(.white)
+
 // The active colour of the items' icon(when there is interaction). There is no deafault colour. 
 // If you don't set it, the icon will have no tint colour and will display the original image's colour
 .setIconsActiveColorTo(.black)
+
 // The colour of the title of the items. The default colour is darkGray
 .setItemsTitleColorTo(.black)
+
 // The size of the title of the items. The default size is 72
 .setItemsTitleSizeTo(50)
+
 // The colour of touch point circle. The default colour is darkGray
 .setTouchPointColorTo(.black)
 ```
