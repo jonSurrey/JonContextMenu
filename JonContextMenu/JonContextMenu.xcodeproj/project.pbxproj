@@ -10,7 +10,7 @@
 		7438C02E2146277500F313E2 /* JonContextMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 7438C02C2146277500F313E2 /* JonContextMenu.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7438C036214627C100F313E2 /* JonContextMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C035214627C100F313E2 /* JonContextMenuView.swift */; };
 		7438C038214627D400F313E2 /* JonContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C037214627D400F313E2 /* JonContextMenu.swift */; };
-		7438C03C2146280B00F313E2 /* JonOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C03B2146280B00F313E2 /* JonOption.swift */; };
+		7438C03C2146280B00F313E2 /* JonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C03B2146280B00F313E2 /* JonItem.swift */; };
 		7438C0402146296500F313E2 /* UIColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C03E2146282B00F313E2 /* UIColor+Utils.swift */; };
 		7438C0412146296800F313E2 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7438C03F2146282B00F313E2 /* UIView+Utils.swift */; };
 		746171E8214771620084F8D6 /* UIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746171E7214771620084F8D6 /* UIImage+Utils.swift */; };
@@ -22,7 +22,7 @@
 		7438C02D2146277500F313E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7438C035214627C100F313E2 /* JonContextMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonContextMenuView.swift; sourceTree = "<group>"; };
 		7438C037214627D400F313E2 /* JonContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonContextMenu.swift; sourceTree = "<group>"; };
-		7438C03B2146280B00F313E2 /* JonOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonOption.swift; sourceTree = "<group>"; };
+		7438C03B2146280B00F313E2 /* JonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JonItem.swift; sourceTree = "<group>"; };
 		7438C03E2146282B00F313E2 /* UIColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Utils.swift"; sourceTree = "<group>"; };
 		7438C03F2146282B00F313E2 /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
 		746171E7214771620084F8D6 /* UIImage+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Utils.swift"; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 				7438C0342146279E00F313E2 /* Extension */,
 				7438C02C2146277500F313E2 /* JonContextMenu.h */,
 				7438C02D2146277500F313E2 /* Info.plist */,
-				7438C03B2146280B00F313E2 /* JonOption.swift */,
+				7438C03B2146280B00F313E2 /* JonItem.swift */,
 				7438C037214627D400F313E2 /* JonContextMenu.swift */,
 				7438C035214627C100F313E2 /* JonContextMenuView.swift */,
 			);
@@ -161,7 +161,7 @@
 				7438C036214627C100F313E2 /* JonContextMenuView.swift in Sources */,
 				7438C038214627D400F313E2 /* JonContextMenu.swift in Sources */,
 				7438C0412146296800F313E2 /* UIView+Utils.swift in Sources */,
-				7438C03C2146280B00F313E2 /* JonOption.swift in Sources */,
+				7438C03C2146280B00F313E2 /* JonItem.swift in Sources */,
 				7438C0402146296500F313E2 /* UIColor+Utils.swift in Sources */,
 				746171E8214771620084F8D6 /* UIImage+Utils.swift in Sources */,
 			);

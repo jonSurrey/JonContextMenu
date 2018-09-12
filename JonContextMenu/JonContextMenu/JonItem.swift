@@ -1,5 +1,5 @@
 //
-//  JonOption.swift
+//  JonItem.swift
 //  JonContextMenu
 //
 //  Created by Jonathan Martins on 10/09/2018.
@@ -9,13 +9,15 @@
 import UIKit
 import Foundation
 
-open class JonAction:UIView {
+open class JonItem:UIView {
     
+    /// The angle that the item will appear
     var angle: CGFloat = 0
     
+    /// The title of the item
     open var title:String = ""
     
-    //// The button of the menu
+    //// The button that represents the item
     let button: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0 , width: 45, height: 45))
         button.fullCircle = true

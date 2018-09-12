@@ -29,10 +29,16 @@ class ExampleCell: UITableViewCell{
         ])
     }
     
+    /// Configures the cell
+    func configureCell(_ title:String, contextMenu:JonContextMenu){
+        self.title.text  = title
+        self.addGestureRecognizer(contextMenu.build())
+    }
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupConstraints()
         selectionStyle = .none
+        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,11 +48,15 @@ class ExampleCell: UITableViewCell{
 
 class ViewController: UITableViewController {
     
-    let items = ["Long touch - DEFAULT menu",
+    private let items = ["Long touch - DEFAULT menu",
                  "Long touch - CUSTOM menu 1",
                  "Long touch - CUSTOM menu 2",
                  "Long touch - CUSTOM menu 3",
                  "Long touch - select item delegates"]
+    
+    private var options:[JonItem] = []
+    
+    private var contextMenu:JonContextMenu!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +71,7 @@ class ViewController: UITableViewController {
     }
     
     /// Converts a valid hexidecimal String value into a colour
-    func getColor(_ color:String)->UIColor{
+    private func getColor(_ color:String)->UIColor{
         return UIColor.init(hexString: color)
     }
     
@@ -77,75 +87,78 @@ class ViewController: UITableViewController {
         guard let cell = tableView.getCell(indexPath, ExampleCell.self) else {
             return UITableViewCell()
         }
-        cell.title.text = items[indexPath.row]
-        
-        addContextMenuTo(cell, at: indexPath)
-        return cell
-    }
-    
-    private func addContextMenuTo(_ cell:UITableViewCell, at indexPath:IndexPath){
-        
-        let options = [JonAction(title: "Google"   , icon: UIImage(named:"google")),
-                       JonAction(title: "Twitter"  , icon: UIImage(named:"twitter")),
-                       JonAction(title: "Facebook" , icon: UIImage(named:"facebook")),
-                       JonAction(title: "Instagram", icon: UIImage(named:"instagram"))]
-        
-        let contextMenu = JonContextMenu(options: options)
         
         let blue   = getColor("#1976d2")
         let green  = getColor("#388e3c")
         let orange = getColor("#e64a19")
         
+        options = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
+                   JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
+                   JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
+                   JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
+        
         switch indexPath.row {
             case 1:
-                contextMenu.setBackgroundColorTo(color: green)
-                contextMenu.setButtonsColor(to: blue, andIconsTo: .white)
-                contextMenu.setButtonsActiveColor(to: orange, andIconsTo: .white)
+                contextMenu = JonContextMenu()
+                    .setItems(options)
+                    .setBackgroundColorTo(green)
+                    .setItemsDefaultColorTo(blue, andIconsTo: .white)
+                    .setItemsActiveColorTo(orange, andIconsTo: .white)
+                    .setItemsTitleColorTo(.black)
             case 2:
-                contextMenu.setBackgroundColorTo(color: orange)
-                contextMenu.setButtonsColor(to: green, andIconsTo: .white)
-                contextMenu.setButtonsActiveColor(to: blue, andIconsTo: .white)
-                contextMenu.setTouchPointColorTo(color: green)
+                contextMenu = JonContextMenu()
+                    .setItems(options)
+                    .setBackgroundColorTo(orange)
+                    .setItemsDefaultColorTo(green, andIconsTo: .white)
+                    .setItemsActiveColorTo(blue, andIconsTo: .white)
+                    .setItemsTitleColorTo(.white)
             case 3:
-                contextMenu.setBackgroundColorTo(color: blue)
-                contextMenu.setButtonsColor(to: orange, andIconsTo: .white)
-                contextMenu.setButtonsActiveColor(to: green, andIconsTo: .white)
-                contextMenu.setOptionsTitleSizeTo(size: 32)
+                contextMenu = JonContextMenu()
+                    .setItems(options)
+                    .setBackgroundColorTo(blue)
+                    .setItemsDefaultColorTo(orange, andIconsTo: .white)
+                    .setItemsActiveColorTo(green, andIconsTo: .white)
+                    .setItemsTitleColorTo(.white)
+                    .setItemsTitleSizeTo(32)
             case 4:
-                contextMenu.set(delegate: self)
+                contextMenu = JonContextMenu()
+                    .setItems(options)
+                    .setDelegate(self)
+                    .setItemsDefaultColorTo(andIconsTo: .darkGray)
+                    .setItemsActiveColorTo(andIconsTo: .white)
             default:
-                break
+                contextMenu = JonContextMenu()
+                    .setItems(options)
+                    .setItemsDefaultColorTo(andIconsTo: .darkGray)
+                    .setItemsActiveColorTo(andIconsTo: .white)
         }
-        cell.addGestureRecognizer(contextMenu)
+        
+        cell.configureCell(items[indexPath.row], contextMenu: contextMenu)
+        return cell
     }
 }
 
-extension ViewController: JonContextMenuDelegate, UIGestureRecognizerDelegate{
-    
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
+extension ViewController: JonContextMenuDelegate{
     func menuOpened() {
-  
+        print("Menu opened")
     }
     
     func menuClosed() {
-        
+        print("Menu closed")
     }
     
-    func menuItemWasActivated(_ item: JonAction) {
-        
-    }
-    
-    func menuItemWasSelected(_ item: JonAction) {
-        let alert = UIAlertController(title: "Menu Item Was Selected", message: "You selected ''\(item.title)'' option!", preferredStyle: .alert)
+    func menuItemWasSelected(_ item: JonItem, atIndex index: Int) {
+        let alert = UIAlertController(title: "Menu Item Was Selected", message: "You selected ''\(options[index].title)'' option!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
     
+    func menuItemWasActivated(_ item: JonItem, atIndex index: Int) {
+        print("Item \(options[index].title) was activated")
+    }
+    
     func menuItemWasDeactivated() {
-        
+        print("Item was deactivated")
     }
 }
 
