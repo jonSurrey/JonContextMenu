@@ -52,7 +52,7 @@ class ViewController: UITableViewController {
                  "Long touch - CUSTOM menu 1",
                  "Long touch - CUSTOM menu 2",
                  "Long touch - CUSTOM menu 3",
-                 "Long touch - select item delegates"]
+                 "Long touch - 8 items and delegates"]
     
     private var options:[JonItem] = []
     
@@ -122,6 +122,15 @@ class ViewController: UITableViewController {
                     .setItemsTitleColorTo(.white)
                     .setItemsTitleSizeTo(32)
             case 4:
+                options = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
+                           JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
+                           JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
+                           JonItem(title: "Instagram", icon: UIImage(named:"instagram")),
+                           JonItem(title: "Google"   , icon: UIImage(named:"google")),
+                           JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
+                           JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
+                           JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
+                
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setDelegate(self)

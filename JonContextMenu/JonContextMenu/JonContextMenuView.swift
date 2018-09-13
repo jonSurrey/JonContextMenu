@@ -44,7 +44,7 @@ class JonContextMenuView:UIView {
     private var properties:JonContextMenu!
     
     /// The distance between the touch point and the menu items
-    private let distanceToTouchPoint: CGFloat = 20
+    private let distanceToTouchPoint: CGFloat = 25
     
     /// The coordinates the the user touched on the screen
     private var touchPoint:       CGPoint!
@@ -91,10 +91,10 @@ class JonContextMenuView:UIView {
         ])
         
         if touchPoint.y > UIScreen.main.bounds.height/2{
-            label.frame = CGRect(x: 20, y: touchPoint.y - 190, width: UIScreen.main.bounds.width/1.2, height: 100)
+            label.frame = CGRect(x: 20, y: touchPoint.y - 200, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         else{
-            label.frame = CGRect(x: 20, y: touchPoint.y + 90, width: UIScreen.main.bounds.width/1.2, height: 100)
+            label.frame = CGRect(x: 20, y: touchPoint.y + 100, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         
         self.addSubview(label)
@@ -273,8 +273,8 @@ class JonContextMenuView:UIView {
         item.isActive = true
         item.setItemColorTo(properties.buttonsActiveColor, iconColor: properties.iconsActiveColor)
 
-        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 20)
-        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 20)
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 30)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 30)
         
         self.label.text = item.title
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
@@ -290,8 +290,8 @@ class JonContextMenuView:UIView {
         item.isActive = false
         item.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
         
-        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -20)
-        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -20)
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -30)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -30)
         
         UIView.animate(withDuration: 0.2, animations: {
             self.label.alpha = 0.0
