@@ -14,12 +14,21 @@ A beautiful and minimalist arc menu like the Pinterest one, written in Swift. Al
 import JonContextMenu
 
 // Create an array of type "JonItem" for the items you desire to show.
-// "JonItem" constructor takes a String to be title of the item and an UIImage to be the icon of the item.
+// "JonItem" constructor takes an id to identify the object, a String to be the title of the item and 
+// an UIImage to be the icon of the item.
 let items = [JonItem(id: 1, title: "Google"   , icon: UIImage(named:"google")),
              JonItem(id: 2, title: "Twitter"  , icon: UIImage(named:"twitter")),
              JonItem(id: 3, title: "Facebook" , icon: UIImage(named:"facebook")),
              JonItem(id: 4, title: "Instagram", icon: UIImage(named:"instagram"))]
+```
 
+The JonItem contructor has also a fourth optional parameter called "data". You can use it to add some object that you would like to have access later when selecting this item
+
+```swift
+JonItem(id: 1, title: "Google", icon: UIImage(named:"google", data: <<SOMEOBJECT>>)
+```
+
+```swift
 // Then, create an instance of JonContextMenu setting your array to it.
 let contextMenu = JonContextMenu().setItems(options).build()
 
