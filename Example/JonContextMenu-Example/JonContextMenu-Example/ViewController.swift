@@ -56,8 +56,6 @@ class ViewController: UITableViewController {
     
     private var options:[JonItem] = []
     
-    //private var contextMenu:JonContextMenu!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableViewController()
@@ -65,7 +63,10 @@ class ViewController: UITableViewController {
     
     private func setupTableViewController(){
         self.title = "Example"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+        }
         self.tableView.registerCell(ExampleCell.self)
         self.tableView.tableFooterView = UIView()
     }
