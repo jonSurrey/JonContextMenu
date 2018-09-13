@@ -147,6 +147,7 @@ open class JonContextMenu{
             }
             self.window     = window
             self.properties = properties
+            self.minimumPressDuration = 0.3
             addTarget(self, action: #selector(setupTouchAction))
         }
         
@@ -174,7 +175,7 @@ open class JonContextMenu{
         
         // Triggers the events for when the touch ends
         private func longPressEnded() {
-            if let currentItem = currentItem{
+            if let currentItem = currentItem, currentItem.isActive{
                 properties.delegate?.menuItemWasSelected(item: currentItem)
             }
             dismissMenu()

@@ -94,7 +94,7 @@ class JonContextMenuView:UIView {
             label.frame = CGRect(x: 20, y: touchPoint.y - 200, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         else{
-            label.frame = CGRect(x: 20, y: touchPoint.y + 100, width: UIScreen.main.bounds.width/1.2, height: 100)
+            label.frame = CGRect(x: 20, y: touchPoint.y + 200, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         
         self.addSubview(label)

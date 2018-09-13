@@ -11,6 +11,9 @@ import Foundation
 
 open class JonItem:UIView {
     
+    private static let vWidth  = 50
+    private static let vHeight = 50
+    
     /// The id of the item
     open var id:Int?
     
@@ -36,7 +39,7 @@ open class JonItem:UIView {
     
     /// The button that represents the item
     private let button: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0 , width: 45, height: 45))
+        let button = UIButton(frame: CGRect(x: 0, y: 0 , width: JonItem.vWidth, height: JonItem.vHeight))
         button.fullCircle = true
         button.addDropShadow()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +48,7 @@ open class JonItem:UIView {
     
     /// The warpper for the button and icon
     let wrapper: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0 , width: 45, height: 45))
+        let view = UIView(frame: CGRect(x: 0, y: 0 , width: JonItem.vWidth, height: JonItem.vHeight))
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -75,7 +78,7 @@ open class JonItem:UIView {
     }
     
     public init(id:Int, title:String, icon:UIImage?, data:Any?=nil){
-        super.init(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+        super.init(frame: CGRect(x: 0, y: 0, width: JonItem.vWidth, height: JonItem.vHeight))
         self.id         = id
         self.data       = data
         self.title      = title
@@ -84,7 +87,7 @@ open class JonItem:UIView {
     }
     
     override init(frame: CGRect) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+        super.init(frame: CGRect(x: 0, y: 0, width: JonItem.vWidth, height: JonItem.vHeight))
         setupConstraints()
     }
     
