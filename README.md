@@ -15,10 +15,10 @@ import JonContextMenu
 
 // Create an array of type "JonItem" for the items you desire to show.
 // "JonItem" constructor takes a String to be title of the item and an UIImage to be the icon of the item.
-let items = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
-             JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
-             JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
-             JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
+let items = [JonItem(id: 1, title: "Google"   , icon: UIImage(named:"google")),
+             JonItem(id: 2, title: "Twitter"  , icon: UIImage(named:"twitter")),
+             JonItem(id: 3, title: "Facebook" , icon: UIImage(named:"facebook")),
+             JonItem(id: 4, title: "Instagram", icon: UIImage(named:"instagram"))]
 
 // Then, create an instance of JonContextMenu setting your array to it.
 let contextMenu = JonContextMenu().setItems(options).build()
@@ -43,13 +43,13 @@ class ViewController:JonContextMenuDelegate{
     func menuClosed(){
       // Called when the JonContextMenu closes
     }
-    func menuItemWasSelected(_ item:JonItem, atIndex index:Int){
+    func menuItemWasSelected(item:JonItem){
       // Called when the user selects one of the items
     }
-    func menuItemWasActivated(_ item:JonItem, atIndex index:Int){
+    func menuItemWasActivated(item:JonItem){
       // Called when the user interacts with one of the items
     }
-    func menuItemWasDeactivated(){
+    func menuItemWasDeactivated(item:JonItem){
       // Called when the user stops interacting with one of the items
     }
 }
@@ -106,7 +106,19 @@ Installation
 
 ### CocoaPods
 
-Not available yet, but will be soon.
+To integrate JonContextMenu to your project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+target '<Your Target Name>' do
+    pod 'JonContextMenu', :git => 'https://github.com/jonSurrey/JonContextMenu.git', :branch => 'master'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
 
 ### Manual installation
 
