@@ -209,6 +209,7 @@ open class JonContextMenu{
         
         /// Creates the JonContextMenu view and adds to the Window
         private func showMenu(on location:CGPoint){
+            currentItem     = nil
             contextMenuView = JonContextMenuView(properties, touchPoint: location)
             window.addSubview(contextMenuView)
             properties.delegate?.menuOpened()
