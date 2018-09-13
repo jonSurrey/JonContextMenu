@@ -93,10 +93,10 @@ class ViewController: UITableViewController {
         let green  = getColor("#388e3c")
         let orange = getColor("#e64a19")
         
-        options = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
-                   JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
-                   JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
-                   JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
+        options = [JonItem(id: 1, title: "Google"   , icon: UIImage(named:"google")),
+                   JonItem(id: 2, title: "Twitter"  , icon: UIImage(named:"twitter")),
+                   JonItem(id: 3, title: "Facebook" , icon: UIImage(named:"facebook")),
+                   JonItem(id: 4, title: "Instagram", icon: UIImage(named:"instagram"))]
         
         var contextMenu:JonContextMenu!
         switch indexPath.row {
@@ -123,14 +123,14 @@ class ViewController: UITableViewController {
                     .setItemsTitleColorTo(.white)
                     .setItemsTitleSizeTo(32)
             case 4:
-                options = [JonItem(title: "Google"   , icon: UIImage(named:"google")),
-                           JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
-                           JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
-                           JonItem(title: "Instagram", icon: UIImage(named:"instagram")),
-                           JonItem(title: "Google"   , icon: UIImage(named:"google")),
-                           JonItem(title: "Twitter"  , icon: UIImage(named:"twitter")),
-                           JonItem(title: "Facebook" , icon: UIImage(named:"facebook")),
-                           JonItem(title: "Instagram", icon: UIImage(named:"instagram"))]
+                options = [JonItem(id: 1, title: "Google"   , icon: UIImage(named:"google")),
+                           JonItem(id: 2, title: "Twitter"  , icon: UIImage(named:"twitter")),
+                           JonItem(id: 3, title: "Facebook" , icon: UIImage(named:"facebook")),
+                           JonItem(id: 4, title: "Instagram", icon: UIImage(named:"instagram")),
+                           JonItem(id: 5, title: "Google"   , icon: UIImage(named:"google")),
+                           JonItem(id: 6, title: "Twitter"  , icon: UIImage(named:"twitter")),
+                           JonItem(id: 7, title: "Facebook" , icon: UIImage(named:"facebook")),
+                           JonItem(id: 8, title: "Instagram", icon: UIImage(named:"instagram"))]
                 
                 contextMenu = JonContextMenu()
                     .setItems(options)
@@ -156,18 +156,18 @@ extension ViewController: JonContextMenuDelegate{
         print("Menu closed")
     }
     
-    func menuItemWasSelected(_ item: JonItem, atIndex index: Int) {
-        let alert = UIAlertController(title: "Menu Item Was Selected", message: "You selected ''\(options[index].title)'' option!", preferredStyle: .alert)
+    func menuItemWasSelected(item: JonItem) {
+        let alert = UIAlertController(title: "Menu Item Was Selected", message: "You selected ''\(item.title)'' option!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
     
-    func menuItemWasActivated(_ item: JonItem, atIndex index: Int) {
-        print("Item \(options[index].title) was activated")
+    func menuItemWasActivated(item: JonItem) {
+        print("Item \(item.title) was activated")
     }
     
-    func menuItemWasDeactivated() {
-        print("Item was deactivated")
+    func menuItemWasDeactivated(item: JonItem) {
+        print("Item \(item.title) was activated")
     }
 }
 

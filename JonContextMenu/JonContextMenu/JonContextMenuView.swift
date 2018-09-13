@@ -38,22 +38,22 @@ class JonContextMenuView:UIView {
     }()
     
     /// The view that represents the users's touch point
-    var touchPointView: UIView!
+    var touchPointView:UIView!
     
     /// The properties configuration for the JonContextMenuView
     private var properties:JonContextMenu!
     
     /// The distance between the touch point and the menu items
-    private let distanceToTouchPoint: CGFloat = 25
+    private let distanceToTouchPoint:CGFloat = 25
     
     /// The coordinates the the user touched on the screen
-    private var touchPoint:       CGPoint!
+    private var touchPoint:CGPoint!
     
     /// The X distance from the menu items to the touched point
-    private var xDistanceToItem:  CGFloat!
+    private var xDistanceToItem:CGFloat!
     
  /// The Y distance from the menu items to the touched point
-    private var yDistanceToItem:  CGFloat!
+    private var yDistanceToItem:CGFloat!
     
     /// The direction that the items are supposed to appear
     private var currentDirection: (Direction, Direction)!
@@ -122,7 +122,7 @@ class JonContextMenuView:UIView {
         label.textColor = properties.itemsTitleColor
         
         /// Sets the size of the items' title
-        label.font = UIFont.systemFont(ofSize: properties.itemsTitleSize, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: properties.itemsTitleSize, weight: .heavy)
     }
     
     /// Shows the ContextMenu

@@ -13,9 +13,9 @@ import UIKit.UIGestureRecognizerSubclass
 public protocol JonContextMenuDelegate {
     func menuOpened()
     func menuClosed()
-    func menuItemWasSelected(_ item:JonItem, atIndex index:Int)
-    func menuItemWasActivated(_ item:JonItem, atIndex index:Int)
-    func menuItemWasDeactivated()
+    func menuItemWasSelected(item:JonItem)
+    func menuItemWasActivated(item:JonItem)
+    func menuItemWasDeactivated(item:JonItem)
 }
 
 open class JonContextMenu{
@@ -174,8 +174,8 @@ open class JonContextMenu{
         
         // Triggers the events for when the touch ends
         private func longPressEnded() {
-            if let selectedItem = currentItem, let index = properties.items.index(of: selectedItem){
-                properties.delegate?.menuItemWasSelected(selectedItem, atIndex: index)
+            if let currentItem = currentItem{
+                properties.delegate?.menuItemWasSelected(item: currentItem)
             }
             dismissMenu()
         }
@@ -190,15 +190,13 @@ open class JonContextMenu{
             if let currentItem = currentItem, currentItem.frame.contains(location){
                 if !currentItem.isActive{
                     contextMenuView.activate(currentItem)
-                    if let index = properties.items.index(of: currentItem){
-                        properties.delegate?.menuItemWasActivated(currentItem, atIndex: index)
-                    }
+                    properties.delegate?.menuItemWasActivated(item: currentItem)
                 }
             }
             else{
                 if let currentItem = currentItem, currentItem.isActive{
                     contextMenuView.deactivate(currentItem)
-                    properties.delegate?.menuItemWasDeactivated()
+                    properties.delegate?.menuItemWasDeactivated(item: currentItem)
                 }
                 for item in properties.items{
                     if item.frame.contains(location){

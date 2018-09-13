@@ -11,8 +11,14 @@ import Foundation
 
 open class JonItem:UIView {
     
+    /// The id of the item
+    open var id:Int?
+    
     /// The title of the item
     open var title:String = ""
+    
+    /// The data that the item holds
+    open var data:Any?
     
     /// The angle that the item will appear
     var angle: CGFloat = 0
@@ -68,8 +74,10 @@ open class JonItem:UIView {
         ])
     }
     
-    public init(title:String, icon:UIImage?){
+    public init(id:Int, title:String, icon:UIImage?, data:Any?=nil){
         super.init(frame: CGRect(x: 0, y: 0, width: 45, height: 45))
+        self.id         = id
+        self.data       = data
         self.title      = title
         self.icon.image = icon
         setupConstraints()
