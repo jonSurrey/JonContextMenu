@@ -90,13 +90,6 @@ class JonContextMenuView:UIView {
             background.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
         
-        if touchPoint.y > UIScreen.main.bounds.height/2.7{ //Show Label at up
-            label.frame = CGRect(x: 20, y: touchPoint.y - 215, width: UIScreen.main.bounds.width/1.2, height: 100)
-        }
-        else{ // //Show Label at down
-            label.frame = CGRect(x: 20, y: touchPoint.y + 100, width: UIScreen.main.bounds.width/1.2, height: 100)
-        }
-        
         self.addSubview(properties.highlightedView)
         self.addSubview(touchPointView)
         self.addSubview(label)
@@ -277,12 +270,41 @@ class JonContextMenuView:UIView {
         let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 25)
         let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 25)
         
-        self.label.text = item.title
+
+        
+        showLabel(with: item.title)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
             self.label.alpha = 1.0
             item.wrapper.center    = CGPoint(x: newX, y: newY)
             item.wrapper.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         }, completion: nil)
+    }
+    
+    /// Calculates where the label should appear
+    private func showLabel(with title:String){
+        self.label.text = title
+        let height = properties.itemsTitleSize + 10
+        
+        if touchPoint.x > UIScreen.main.bounds.width/2{ // Align on the left
+            self.label.textAlignment = .left
+        }
+        else{ // Align on the right
+            self.label.textAlignment = .right
+        }
+        
+        if touchPoint.y > UIScreen.main.bounds.height/2.7{ //Show Label at the top
+            let topItem = properties.items.min(by: { (a, b) -> Bool in
+                return a.center.y < b.center.y
+            })
+            
+            label.frame = CGRect(x: 20, y: topItem!.center.y - (height + 50), width: UIScreen.main.bounds.width/1.2, height: height)
+        }
+        else{ // Show Label at the bottom
+            let bottomItem = properties.items.max(by: { (a, b) -> Bool in
+                return a.center.y < b.center.y
+            })
+            label.frame = CGRect(x: 20, y: bottomItem!.center.y + 50, width: UIScreen.main.bounds.width/1.2, height: height)
+        }
     }
     
     /// Deactivate the  item

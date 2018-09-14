@@ -45,13 +45,13 @@ open class JonContextMenu{
     var iconsActiveColor:UIColor?
     
     /// The size of the title of the menu items
-    var itemsTitleSize:CGFloat = 64
+    var itemsTitleSize:CGFloat = 54
     
     /// The colour of the title of the menu items
-    var itemsTitleColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
+    var itemsTitleColor:UIColor = UIColor.init(hexString: "#212121") // Dark Gray
     
     /// The colour of the touch location view
-    var touchPointColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
+    var touchPointColor:UIColor = UIColor.init(hexString: "#212121") // Dark Gray
     
     /// The view selected by the user
     var highlightedView:UIView!

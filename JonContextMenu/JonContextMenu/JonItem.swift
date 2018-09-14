@@ -11,8 +11,8 @@ import Foundation
 
 open class JonItem:UIView {
     
-    private static let vWidth  = 50
-    private static let vHeight = 50
+    private static let vWidth  = 45
+    private static let vHeight = 45
     
     /// The id of the item
     open var id:Int?

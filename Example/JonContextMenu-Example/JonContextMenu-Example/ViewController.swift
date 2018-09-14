@@ -135,11 +135,11 @@ class ViewController: UITableViewController {
                 contextMenu = JonContextMenu()
                     .setItems(options)
                     .setDelegate(self)
-                    .setIconsDefaultColorTo(.darkGray)
+                    .setIconsDefaultColorTo(UIColor.init(hexString: "#212121"))
             default:
                 contextMenu = JonContextMenu()
                     .setItems(options)
-                    .setIconsDefaultColorTo(.darkGray)
+                    .setIconsDefaultColorTo(UIColor.init(hexString: "#212121"))
         }
         
         cell.configureCell(items[indexPath.row], contextMenu: contextMenu)
