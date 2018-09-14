@@ -90,15 +90,16 @@ class JonContextMenuView:UIView {
             background.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
         
-        if touchPoint.y > UIScreen.main.bounds.height/2{
-            label.frame = CGRect(x: 20, y: touchPoint.y - 200, width: UIScreen.main.bounds.width/1.2, height: 100)
+        if touchPoint.y > UIScreen.main.bounds.height/2.7{ //Show Label at up
+            label.frame = CGRect(x: 20, y: touchPoint.y - 215, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
-        else{
-            label.frame = CGRect(x: 20, y: touchPoint.y + 200, width: UIScreen.main.bounds.width/1.2, height: 100)
+        else{ // //Show Label at down
+            label.frame = CGRect(x: 20, y: touchPoint.y + 100, width: UIScreen.main.bounds.width/1.2, height: 100)
         }
         
-        self.addSubview(label)
+        self.addSubview(properties.highlightedView)
         self.addSubview(touchPointView)
+        self.addSubview(label)
     }
     
     /// Configure the views to start with the properties set in the JonContextMenu class
@@ -131,7 +132,7 @@ class JonContextMenuView:UIView {
         calculateDistanceToItem()
         resetItemsPosition()
         anglesForDirection()
-        
+    
         for item in properties.items {
             self.addSubview(item)
             animateItem(item)
@@ -145,7 +146,7 @@ class JonContextMenuView:UIView {
         view.backgroundColor = .clear
         view.fullCircle = true
         view.borderWidth = 3
-        view.alpha = 0.3
+        view.alpha = 0.1
         return view
     }
     
@@ -209,7 +210,7 @@ class JonContextMenuView:UIView {
         guard let direction = currentDirection else {
             return
         }
-        
+        print(direction)
         switch (direction) {
             case (.down, .right):
                 positiveQuorterAngle(startAngle: 0)
@@ -273,8 +274,8 @@ class JonContextMenuView:UIView {
         item.isActive = true
         item.setItemColorTo(properties.buttonsActiveColor, iconColor: properties.iconsActiveColor)
 
-        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 30)
-        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 30)
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 25)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 25)
         
         self.label.text = item.title
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
@@ -290,10 +291,10 @@ class JonContextMenuView:UIView {
         item.isActive = false
         item.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
         
-        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -30)
-        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -30)
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -25)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -25)
         
-        UIView.animate(withDuration: 0.2, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             self.label.alpha = 0.0
             item.wrapper.center    = CGPoint(x: newX, y: newY)
             item.wrapper.transform = CGAffineTransform.identity

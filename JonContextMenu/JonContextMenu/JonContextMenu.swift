@@ -45,13 +45,16 @@ open class JonContextMenu{
     var iconsActiveColor:UIColor?
     
     /// The size of the title of the menu items
-    var itemsTitleSize:CGFloat = 72
+    var itemsTitleSize:CGFloat = 64
     
     /// The colour of the title of the menu items
     var itemsTitleColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
     
     /// The colour of the touch location view
     var touchPointColor:UIColor = UIColor.init(hexString: "#424242") // Dark Gray
+    
+    /// The view selected by the user
+    var highlightedView:UIView!
     
     public init(){
         
@@ -147,14 +150,20 @@ open class JonContextMenu{
             }
             self.window     = window
             self.properties = properties
-            self.minimumPressDuration = 0.3
             addTarget(self, action: #selector(setupTouchAction))
         }
         
+        /// Gets a copy of the touched view to add to the Window
+        private func getTouchedView(){
+            let highlightedView   = self.view!.snapshotView(afterScreenUpdates: true)!
+            highlightedView.frame = self.view!.superview!.convert(self.view!.frame, to: nil)
+            properties.highlightedView = highlightedView
+        }
+        
         /// Handle the touch events on the view
-        @objc private func setupTouchAction(_ sender:UILongPressGestureRecognizer){
-            let location = sender.location(in: window)
-            switch sender.state {
+        @objc private func setupTouchAction(){
+            let location = self.location(in: window)
+            switch self.state {
                 case .began:
                     longPressBegan(on: location)
                 case .changed:
@@ -170,6 +179,7 @@ open class JonContextMenu{
         
         /// Trigger the events for when the touch begins
         private func longPressBegan(on location:CGPoint) {
+            getTouchedView()
             showMenu(on: location)
         }
         
@@ -212,6 +222,7 @@ open class JonContextMenu{
         private func showMenu(on location:CGPoint){
             currentItem     = nil
             contextMenuView = JonContextMenuView(properties, touchPoint: location)
+            
             window.addSubview(contextMenuView)
             properties.delegate?.menuOpened()
         }
