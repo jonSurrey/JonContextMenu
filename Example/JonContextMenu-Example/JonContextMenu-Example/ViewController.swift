@@ -11,6 +11,16 @@ import JonContextMenu
 
 class ExampleCell: UITableViewCell{
     
+    // Cell's text nuber
+    let squareTitle: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.backgroundColor = UIColor.init(hexString: "#1976d2")
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // Cell's text info
     let title: UILabel = {
         let label = UILabel()
@@ -22,16 +32,24 @@ class ExampleCell: UITableViewCell{
     /// Adds the constraints to the views in this cell
     private func setupConstraints(){
         self.contentView.addSubview(title)
+        self.contentView.addSubview(squareTitle)
         NSLayoutConstraint.activate([
-            title.centerYAnchor .constraint(equalTo: self.contentView.centerYAnchor),
-            title.leadingAnchor .constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
+            squareTitle.widthAnchor   .constraint(equalToConstant: 50),
+            squareTitle.heightAnchor  .constraint(equalToConstant: 50),
+            squareTitle.topAnchor     .constraint(equalTo: self.contentView.topAnchor    , constant: 12),
+            squareTitle.bottomAnchor  .constraint(equalTo: self.contentView.bottomAnchor , constant: -12),
+            squareTitle.leadingAnchor .constraint(equalTo: self.contentView.leadingAnchor, constant: 12),
+            
+            title.centerYAnchor .constraint(equalTo: squareTitle.centerYAnchor),
+            title.leadingAnchor .constraint(equalTo: squareTitle.trailingAnchor, constant: 12),
             title.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
         ])
     }
     
     /// Configures the cell
-    func configureCell(_ title:String, contextMenu:JonContextMenu){
+    func configureCell(_ index:Int, title:String, contextMenu:JonContextMenu){
         self.title.text  = title
+        self.squareTitle.text  = "\(index)"
         self.addGestureRecognizer(contextMenu.build())
     }
 
@@ -48,11 +66,11 @@ class ExampleCell: UITableViewCell{
 
 class ViewController: UITableViewController {
     
-    private let items = ["Long touch - DEFAULT menu",
-                 "Long touch - CUSTOM menu 1",
-                 "Long touch - CUSTOM menu 2",
-                 "Long touch - CUSTOM menu 3",
-                 "Long touch - 8 items and delegates"]
+    private let items = ["DEFAULT menu",
+                         "CUSTOM menu 1",
+                         "CUSTOM menu 2",
+                         "CUSTOM menu 3",
+                         "8 items and delegate"]
     
     private var options:[JonItem] = []
     
@@ -142,7 +160,7 @@ class ViewController: UITableViewController {
                     .setIconsDefaultColorTo(UIColor.init(hexString: "#212121"))
         }
         
-        cell.configureCell(items[indexPath.row], contextMenu: contextMenu)
+        cell.configureCell(indexPath.row, title: items[indexPath.row], contextMenu: contextMenu)
         return cell
     }
 }

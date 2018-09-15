@@ -280,6 +280,22 @@ class JonContextMenuView:UIView {
         }, completion: nil)
     }
     
+    /// Deactivate the  item
+    func deactivate(_ item:JonItem){
+        
+        item.isActive = false
+        item.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
+        
+        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -25)
+        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -25)
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.label.alpha = 0.0
+            item.wrapper.center    = CGPoint(x: newX, y: newY)
+            item.wrapper.transform = CGAffineTransform.identity
+        })
+    }
+    
     /// Calculates where the label should appear
     private func showLabel(with title:String){
         self.label.text = title
@@ -297,29 +313,13 @@ class JonContextMenuView:UIView {
                 return a.center.y < b.center.y
             })
             
-            label.frame = CGRect(x: 20, y: topItem!.center.y - (height + 50), width: UIScreen.main.bounds.width/1.2, height: height)
+            label.frame = CGRect(x: 10, y: topItem!.center.y - (height + 50), width: UIScreen.main.bounds.width/1.1, height: height)
         }
         else{ // Show Label at the bottom
             let bottomItem = properties.items.max(by: { (a, b) -> Bool in
                 return a.center.y < b.center.y
             })
-            label.frame = CGRect(x: 20, y: bottomItem!.center.y + 50, width: UIScreen.main.bounds.width/1.2, height: height)
+            label.frame = CGRect(x: 10, y: bottomItem!.center.y + 50, width: UIScreen.main.bounds.width/1.1, height: height)
         }
-    }
-    
-    /// Deactivate the  item
-    func deactivate(_ item:JonItem){
-        
-        item.isActive = false
-        item.setItemColorTo(properties.buttonsDefaultColor, iconColor: properties.iconsDefaultColor)
-        
-        let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * -25)
-        let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * -25)
-        
-        UIView.animate(withDuration: 0.1, animations: {
-            self.label.alpha = 0.0
-            item.wrapper.center    = CGPoint(x: newX, y: newY)
-            item.wrapper.transform = CGAffineTransform.identity
-        })
     }
 }

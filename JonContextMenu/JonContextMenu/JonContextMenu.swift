@@ -157,6 +157,8 @@ open class JonContextMenu{
         private func getTouchedView(){
             let highlightedView   = self.view!.snapshotView(afterScreenUpdates: true)!
             highlightedView.frame = self.view!.superview!.convert(self.view!.frame, to: nil)
+            highlightedView.borderWidth = 0.5
+            highlightedView.borderColor = .lightGray
             properties.highlightedView = highlightedView
         }
         
