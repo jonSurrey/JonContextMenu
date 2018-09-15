@@ -6,7 +6,7 @@ JonContextMenu
 
 A beautiful and minimalist arc menu like the Pinterest one, written in Swift. Allows you to add up to 8 items and customize it to the way you like!
 
-![Gif](https://thumbs.gfycat.com/PeriodicGregariousAfricangoldencat-size_restricted.gif)
+![Gif](https://media.giphy.com/media/31UCkk6Hs1bMVb2bo7/giphy.gif)
 
 ### How to use
 
