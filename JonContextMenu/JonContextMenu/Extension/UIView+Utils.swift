@@ -23,7 +23,7 @@ extension UIView {
     
     var fullCircle: Bool {
         get{
-            return self.fullCircle
+            return layer.cornerRadius == 0 ? false:true
         }
         set {
             if newValue {
