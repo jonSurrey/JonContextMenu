@@ -9,19 +9,27 @@
 import UIKit
 import Foundation
 
-open class JonItem:UIView {
+@objc open class JonItem:UIView {
     
     private static let vWidth  = 45
     private static let vHeight = 45
     
     /// The id of the item
-    open var id:Int?
+    private var _id:Int?
+    @objc public var id: NSNumber? {
+    get {
+      return _id as NSNumber?
+    }
+    @objc set(newNumber) {
+      _id = newNumber?.intValue
+    }
+  }
     
     /// The title of the item
-    open var title:String = ""
+    @objc open var title:String = ""
     
     /// The data that the item holds
-    open var data:Any?
+    @objc open var data:Any?
     
     /// The angle that the item will appear
     var angle: CGFloat = 0
@@ -77,9 +85,9 @@ open class JonItem:UIView {
         ])
     }
     
-    public init(id:Int, title:String, icon:UIImage?, data:Any?=nil){
+  @objc  public init(id:NSNumber, title:String, icon:UIImage?, data:Any?=nil){
         super.init(frame: CGRect(x: 0, y: 0, width: JonItem.vWidth, height: JonItem.vHeight))
-        self.id         = id
+        _id         = id.intValue
         self.data       = data
         self.title      = title
         self.icon.image = icon
@@ -96,7 +104,7 @@ open class JonItem:UIView {
     }
     
     /// Changes the colours of the button and the icon
-    func setItemColorTo(_ itemColour:UIColor, iconColor:UIColor?=nil){
+    @objc func setItemColorTo(_ itemColour:UIColor, iconColor:UIColor?=nil){
         if let colour = iconColor{
             let templateImage = icon.image?.withRenderingMode(.alwaysTemplate)
             icon.image     = templateImage
