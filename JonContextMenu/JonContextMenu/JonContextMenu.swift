@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import UIKit.UIGestureRecognizerSubclass
 
-public protocol JonContextMenuDelegate {
+@objc public protocol JonContextMenuDelegate {
     func menuOpened()
     func menuClosed()
     func menuItemWasSelected(item:JonItem)
@@ -18,7 +18,7 @@ public protocol JonContextMenuDelegate {
     func menuItemWasDeactivated(item:JonItem)
 }
 
-open class JonContextMenu{
+@objc open class JonContextMenu:NSObject{
     
     /// The items to be displayed
     var items:[JonItem] = []
@@ -56,77 +56,77 @@ open class JonContextMenu{
     /// The view selected by the user
     var highlightedView:UIView!
     
-    public init(){
-        
+    override public init(){
+        super.init()
     }
     
     /// Sets the items for the JonContextMenu
-    open func setItems(_ items: [JonItem])->JonContextMenu{
+  @objc   open func setItems(_ items: [JonItem])->JonContextMenu{
         self.items = items
         return self
     }
     
     /// Sets the delegate for the JonContextMenu
-    open func setDelegate(_ delegate: JonContextMenuDelegate?)->JonContextMenu{
+  @objc  open func setDelegate(_ delegate: JonContextMenuDelegate?)->JonContextMenu{
         self.delegate = delegate
         return self
     }
     
     /// Sets the background of the JonContextMenu
-    open func setBackgroundColorTo(_ backgroundColor: UIColor, withAlpha alpha:CGFloat = 0.9)->JonContextMenu{
+    @objc open func setBackgroundColorTo(_ backgroundColor: UIColor, withAlpha alpha:CGFloat = 0.9)->JonContextMenu{
         self.backgroundAlpha = alpha
         self.backgroundColor = backgroundColor
         return self
     }
     
     /// Sets the colour of the buttons for when there is no interaction
-    open func setItemsDefaultColorTo(_ colour: UIColor)->JonContextMenu{
+    @objc open func setItemsDefaultColorTo(_ colour: UIColor)->JonContextMenu{
         self.buttonsDefaultColor = colour
         return self
     }
     
     /// Sets the colour of the buttons for when there is interaction
-    open func setItemsActiveColorTo(_ colour: UIColor)->JonContextMenu{
+    @objc open func setItemsActiveColorTo(_ colour: UIColor)->JonContextMenu{
         self.buttonsActiveColor = colour
         return self
     }
     
     /// Sets the colour of the icons for when there is no interaction
-    open func setIconsDefaultColorTo(_ colour: UIColor?)->JonContextMenu{
+    @objc open func setIconsDefaultColorTo(_ colour: UIColor?)->JonContextMenu{
         self.iconsDefaultColor = colour
         return self
     }
     
     /// Sets the colour of the icons for when there is interaction
-    open func setIconsActiveColorTo(_ colour: UIColor?)->JonContextMenu{
+    @objc open func setIconsActiveColorTo(_ colour: UIColor?)->JonContextMenu{
         self.iconsActiveColor = colour
         return self
     }
     
     /// Sets the colour of the JonContextMenu items title
-    open func setItemsTitleColorTo(_ color: UIColor)->JonContextMenu{
+    @objc open func setItemsTitleColorTo(_ color: UIColor)->JonContextMenu{
         self.itemsTitleColor = color
         return self
     }
     
     /// Sets the size of the JonContextMenu items title
-    open func setItemsTitleSizeTo(_ size: CGFloat)->JonContextMenu{
+    @objc open func setItemsTitleSizeTo(_ size: CGFloat)->JonContextMenu{
         self.itemsTitleSize = size
         return self
     }
     
     /// Sets the colour of the JonContextMenu touch point
-    open func setTouchPointColorTo(_ color: UIColor)->JonContextMenu{
+    @objc open func setTouchPointColorTo(_ color: UIColor)->JonContextMenu{
         self.touchPointColor = color
         return self
     }
     
     /// Builds the JonContextMenu
-    open func build()->Builder{
+    @objc open func build()->Builder{
         return Builder(self)
     }
     
-    open class Builder:UILongPressGestureRecognizer{
+    @objc open class Builder:UILongPressGestureRecognizer{
         
         /// The wrapper for the JonContextMenu
         private var window:UIWindow!
@@ -143,7 +143,7 @@ open class JonContextMenu{
         /// Indicates if there is a menu item active
         private var isItemActive = false
         
-        init(_ properties:JonContextMenu){
+      @objc  init(_ properties:JonContextMenu){
             super.init(target: nil, action: nil)
             guard let window = UIApplication.shared.keyWindow else{
                 fatalError("No access to UIApplication Window")
