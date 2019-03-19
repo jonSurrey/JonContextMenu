@@ -15,16 +15,8 @@ import Foundation
     private static let vHeight = 45
     
     /// The id of the item
-    private var _id:Int?
-    @objc public var id: NSNumber? {
-    get {
-      return _id as NSNumber?
-    }
-    @objc set(newNumber) {
-      _id = newNumber?.intValue
-    }
-  }
-    
+    open var id:NSInteger?
+
     /// The title of the item
     @objc open var title:String = ""
     
@@ -85,9 +77,9 @@ import Foundation
         ])
     }
     
-  @objc  public init(id:NSNumber, title:String, icon:UIImage?, data:Any?=nil){
+    @objc public init(id:NSInteger, title:String, icon:UIImage?, data:Any?=nil){
         super.init(frame: CGRect(x: 0, y: 0, width: JonItem.vWidth, height: JonItem.vHeight))
-        _id         = id.intValue
+        self.id         = id
         self.data       = data
         self.title      = title
         self.icon.image = icon

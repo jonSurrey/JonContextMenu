@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import UIKit.UIGestureRecognizerSubclass
 
-@objc public protocol JonContextMenuDelegate {
+@objc public protocol JonContextMenuDelegate{
     func menuOpened()
     func menuClosed()
     func menuItemWasSelected(item:JonItem)
@@ -61,13 +61,13 @@ import UIKit.UIGestureRecognizerSubclass
     }
     
     /// Sets the items for the JonContextMenu
-  @objc   open func setItems(_ items: [JonItem])->JonContextMenu{
+    @objc open func setItems(_ items: [JonItem])->JonContextMenu{
         self.items = items
         return self
     }
     
     /// Sets the delegate for the JonContextMenu
-  @objc  open func setDelegate(_ delegate: JonContextMenuDelegate?)->JonContextMenu{
+    @objc open func setDelegate(_ delegate: JonContextMenuDelegate?)->JonContextMenu{
         self.delegate = delegate
         return self
     }

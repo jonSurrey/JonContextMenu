@@ -52,7 +52,7 @@ class JonContextMenuView:UIView {
     /// The X distance from the menu items to the touched point
     private var xDistanceToItem:CGFloat!
     
- /// The Y distance from the menu items to the touched point
+    /// The Y distance from the menu items to the touched point
     private var yDistanceToItem:CGFloat!
     
     /// The direction that the items are supposed to appear
@@ -270,8 +270,6 @@ class JonContextMenuView:UIView {
         let newX = (item.wrapper.center.x + CGFloat(__cospi(Double(item.angle/180))) * 25)
         let newY = (item.wrapper.center.y + CGFloat(__sinpi(Double(item.angle/180))) * 25)
         
-
-        
         showLabel(with: item.title)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 1, options: [], animations: {
             self.label.alpha = 1.0
@@ -299,27 +297,56 @@ class JonContextMenuView:UIView {
     /// Calculates where the label should appear
     private func showLabel(with title:String){
         self.label.text = title
-        let height = properties.itemsTitleSize + 10
+        
+        let labelWidth  = self.label.intrinsicContentSize.width
+        let labelHeight = self.label.intrinsicContentSize.height
+
+        let labelSize   = CGSize(width: labelWidth, height: labelHeight)
+        var labelOrigin = CGPoint()
         
         if touchPoint.x > UIScreen.main.bounds.width/2{ // Align on the left
             self.label.textAlignment = .left
+            labelOrigin.x = calculateLabelLeftPosition(labelWidth)
         }
         else{ // Align on the right
             self.label.textAlignment = .right
+            labelOrigin.x = calculateLabelRightPosition(labelWidth)
         }
         
         if touchPoint.y > UIScreen.main.bounds.height/2.7{ //Show Label at the top
             let topItem = properties.items.min(by: { (a, b) -> Bool in
                 return a.center.y < b.center.y
             })
-            
-            label.frame = CGRect(x: 10, y: topItem!.center.y - (height + 50), width: UIScreen.main.bounds.width/1.1, height: height)
+            labelOrigin.y = topItem!.center.y - (labelHeight + 50)
         }
         else{ // Show Label at the bottom
             let bottomItem = properties.items.max(by: { (a, b) -> Bool in
                 return a.center.y < b.center.y
             })
-            label.frame = CGRect(x: 10, y: bottomItem!.center.y + 50, width: UIScreen.main.bounds.width/1.1, height: height)
+            labelOrigin.y = bottomItem!.center.y + 50
+        }
+        label.frame = CGRect(origin: labelOrigin, size: labelSize)
+    }
+    
+    /// Calculates where on the leftside of the screen the label should be placed
+    /// Obs: before calling this function the touchPoint.x must be > than the half of the screen
+    private func calculateLabelLeftPosition(_ labelWidth:CGFloat)->CGFloat{
+        if touchPoint.x > (labelWidth + 30){
+            return touchPoint.x - (labelWidth + 30)
+        }
+        else{
+            return 10
+        }
+    }
+    
+    /// Calculates where on the rightside of the screen the label should be placed
+    /// Obs: before calling this function the touchPoint.x must be < than the half of the screen
+    private func calculateLabelRightPosition(_ labelWidth:CGFloat)->CGFloat{
+        if (UIScreen.main.bounds.width - (touchPoint.x + 100)) > labelWidth{
+            return touchPoint.x + 100
+        }
+        else{
+            return 10
         }
     }
 }
