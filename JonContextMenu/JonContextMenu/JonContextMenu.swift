@@ -24,7 +24,7 @@ import UIKit.UIGestureRecognizerSubclass
     var items:[JonItem] = []
     
     /// The delegate to notify the JonContextMenu host when an item is selected
-    var delegate:JonContextMenuDelegate?
+    weak var delegate:JonContextMenuDelegate?
     
     /// The Background's alpha of the view
     var backgroundAlpha:CGFloat = 0.9
