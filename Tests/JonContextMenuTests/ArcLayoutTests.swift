@@ -126,6 +126,16 @@ struct ArcLayoutTests {
         #expect(title.maxX <= bounds.maxX - ArcMetrics.titleMargin)
     }
 
+    @Test("In landscape, a tall title with no room above or below stays inside the bounds")
+    func tallTitleStaysInsideBoundsInLandscape() {
+        let bounds = CGRect(x: 59, y: 0, width: 734, height: 372)
+        // Near the left edge the arc fans sideways, so the title fits neither above nor below it.
+        let layout = ArcLayout(touchPoint: CGPoint(x: 79, y: 186), bounds: bounds, itemCount: 4)
+        let title = layout.titleFrame(for: CGSize(width: 150, height: 72))
+        #expect(title.minY >= bounds.minY)
+        #expect(title.maxY <= bounds.maxY)
+    }
+
     @Test("A title wider than the screen is narrowed to fit")
     func wideTitleIsNarrowed() {
         let layout = layout(at: CGPoint(x: bounds.midX, y: bounds.midY))
