@@ -1,155 +1,113 @@
+# JonContextMenu
 
-JonContextMenu
-===========
-[![CocoaPods Compatible](https://img.shields.io/badge/pod-1.0.0-red.svg)](https://github.com/jonSurrey/JonContextMenu)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/jonSurrey/JonContextMenu/blob/master/LICENSE)
+[![Swift 6](https://img.shields.io/badge/Swift-6-orange.svg)](https://swift.org)
+[![iOS 15+](https://img.shields.io/badge/iOS-15%2B-blue.svg)](https://developer.apple.com/ios/)
+[![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A beautiful and minimalist arc menu like the Pinterest one, written in Swift. Allows you to add up to 8 items and customize it to the way you like!
+A long-press arc menu for iOS, in the style of Pinterest's. Press and hold a view, slide your finger
+to an item, and let go to select it. Works with UIKit and SwiftUI.
 
-![Gif](https://media.giphy.com/media/31UCkk6Hs1bMVb2bo7/giphy.gif)
+<img src="docs/demo.gif" width="320" alt="The example app's four menus: default style, custom colors, original image colors, and eight items. Each long press fans the items out, and dragging highlights each item and shows its title.">
 
-### How to use
+- Items fan out away from screen edges, so they stay reachable anywhere on the screen.
+- Haptic feedback when the menu opens and when an item is highlighted.
+- VoiceOver users get every item as a custom action on the view.
+- Respects Reduce Motion, Dynamic Type and dark mode.
+- No dependencies.
+
+## Installation
+
+In Xcode, choose **File → Add Package Dependencies…** and enter:
+
+```
+https://github.com/jonSurrey/JonContextMenu
+```
+
+Or add it to `Package.swift`:
 
 ```swift
-// First import the library to your class file.
+.package(url: "https://github.com/jonSurrey/JonContextMenu", from: "2.0.0")
+```
+
+## Usage
+
+Create up to eight items. Each one runs its handler when the user lets go on it.
+
+```swift
 import JonContextMenu
 
-// Create an array of type "JonItem" for the items you desire to show.
-// "JonItem" constructor takes an id to identify the object, a String to be the title of the item and 
-// an UIImage to be the icon of the item.
-let items = [JonItem(id: 1, title: "Google"   , icon: UIImage(named:"google")),
-             JonItem(id: 2, title: "Twitter"  , icon: UIImage(named:"twitter")),
-             JonItem(id: 3, title: "Facebook" , icon: UIImage(named:"facebook")),
-             JonItem(id: 4, title: "Instagram", icon: UIImage(named:"instagram"))]
+let items = [
+    ArcMenuItem(title: "Like", image: UIImage(systemName: "heart.fill")) { like() },
+    ArcMenuItem(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { share() },
+    ArcMenuItem(title: "Save", image: UIImage(systemName: "bookmark.fill")) { save() }
+]
 ```
 
-The JonItem contructor has also a fourth optional parameter called "data". You can use it to add some object that you would like to have access later when selecting this item
+### UIKit
 
 ```swift
-JonItem(id: 1, title: "Google", icon: UIImage(named:"google", data: <<SOMEOBJECT>>)
+view.addInteraction(ArcMenuInteraction(items: items))
 ```
+
+In a reusable cell, add the interaction once and update `items` when you configure the cell.
+
+### SwiftUI
 
 ```swift
-// Then, create an instance of JonContextMenu setting your array to it.
-let contextMenu = JonContextMenu().setItems(options).build()
-
-// Finally, add the "contextMenu" to the view you wish.
-<<YOURVIEW>>.addGestureRecognizer(contextMenu)
+PhotoCard(photo)
+    .arcMenu(items)
 ```
-To show the menu, just long press the view you set the JonContextMenu.
 
-### Delegates
-
-If you want to be notified when some interaction happens on the context menu, JonContextMenu has with 5 functions that you can implemement:
-
+While the menu is open, the pressed view stays visible above the dimmed background. In SwiftUI, pass
+the view's shape so it keeps its outline:
 
 ```swift
-// Implement the JonContextMenuDelegate to your ViewController 
-class ViewController:JonContextMenuDelegate{
-
-    func menuOpened(){
-      // Called when the JonContextMenu opens
-    }
-    func menuClosed(){
-      // Called when the JonContextMenu closes
-    }
-    func menuItemWasSelected(item:JonItem){
-      // Called when the user selects one of the items
-    }
-    func menuItemWasActivated(item:JonItem){
-      // Called when the user interacts with one of the items
-    }
-    func menuItemWasDeactivated(item:JonItem){
-      // Called when the user stops interacting with one of the items
-    }
-}
-
-// Then, when creating an instance of JonContextMenu, set the delegate.
-let contextMenu = JonContextMenu()
-                  .setItems(options)
-                  .setDelegate(self)
-                  .build()
+PhotoCard(photo)
+    .clipShape(RoundedRectangle(cornerRadius: 16))
+    .arcMenu(items, previewShape: RoundedRectangle(cornerRadius: 16))
 ```
 
-Custom Configuration
-===========
+UIKit views keep their own shape automatically. In both, shadows outside the view's frame aren't shown.
 
-The default visual configuration for JonContextMenu will probably be enough for you, but if you wish to make a few custom modification, the library has some functions that allow you to personalize it as you wish.
+The menu takes over touches on the view it is attached to, so attach it to content that doesn't have
+its own buttons or gestures.
+
+## Customization
+
+Every property of `ArcMenuStyle` has a default that adapts to light and dark mode.
 
 ```swift
-JonContextMenu()
+var style = ArcMenuStyle()
+style.backgroundColor = .systemIndigo.withAlphaComponent(0.9)
+style.itemColor = .white
+style.highlightedItemColor = .systemOrange
+style.iconColor = .systemIndigo
+style.highlightedIconColor = .white
+style.titleColor = .white
+style.titleFont = .systemFont(ofSize: 34, weight: .heavy)
+style.touchIndicatorColor = .white
 
-// The number of items to be displayed, it can be up to 8 items.
-.setItems(options)
-
-// The delegate to notify when an item is selected.
-.setDelegate(self)
-
-// The background colour of the view. The default colour is white and the default alpha is 0.9
-.setBackgroundColorTo(.white, withAlpha: 0.5)
-
-// The idle colour of the items(when there is no interaction). The default colour is white
-.setItemsDefaultColorTo(.black)
-
-// The idle colour of the items' icon(when there is no interaction).  There is no deafault colour. 
-// If you don't set it, the icon will have no tint colour and will display the original image's colour
-.setIconsDefaultColorTo(.white)
-
-// The active colour of the items(when there is interaction). The default colour is darkRed
-.setItemsActiveColorTo(.white)
-
-// The active colour of the items' icon(when there is interaction). There is no deafault colour. 
-// If you don't set it, the icon will have no tint colour and will display the original image's colour
-.setIconsActiveColorTo(.black)
-
-// The colour of the title of the items. The default colour is darkGray
-.setItemsTitleColorTo(.black)
-
-// The size of the title of the items. The default size is 72
-.setItemsTitleSizeTo(50)
-
-// The colour of touch point circle. The default colour is darkGray
-.setTouchPointColorTo(.black)
-```
-Installation
-===========
-
-### CocoaPods
-
-To integrate JonContextMenu to your project using CocoaPods, specify it in your `Podfile`:
-
-```ruby
-target '<Your Target Name>' do
-    pod 'JonContextMenu', :git => 'https://github.com/jonSurrey/JonContextMenu.git', :branch => 'master'
-end
+view.addInteraction(ArcMenuInteraction(items: items, style: style))
 ```
 
-Then, run the following command:
+To keep an image's own colors, set `iconColor` and `highlightedIconColor` to `nil`.
 
-```bash
-$ pod install
-```
+## Example app
 
-### Manual installation
+Open `Example/Example.xcodeproj` and run the **Example** scheme. It shows the same menus in UIKit and SwiftUI.
 
-First download the "JonContextMenu" folder. Then, in Xcode, right-click on the root of your project node in the project navigator. Click "Add Files" to “YOURPROJECTNAME”. In the file chooser, navigate to where "JonContextMenu" folder is and select JonContextMenu.xcodeproj. Click "Add" to add JonContextMenu.xcodeproj as a sub-project.
+## Migrating from 1.x
 
-Select the top level of your project node to open the project editor. Click the YOUR_PROJECT_NAME target, and then go to the General tab.
-
-Scroll down to the Embedded Binaries section. Drag JonContextMenu.framework from the Products folder of JonContextMenu.xcodeproj onto this section.
-
-Clean and rebuild your project, and you should be good to go!
-
-Collaboration
-===========
-
-This is a simple libray that I created to help myself in my own work since I didnt find any other that would do what I wanted. I know that there is still here a lot of space for improvements and adding new features, so please, any ideas or issues, feel free to collaborate!
-
-## Author
-
-Jonathan Martins, jon.martinsu@gmail.com
+| 1.x | 2.0 |
+|---|---|
+| CocoaPods | Swift Package Manager |
+| `JonItem(id:title:icon:data:)` | `ArcMenuItem(title:image:handler:)` |
+| `JonContextMenuDelegate` | The item's `handler` |
+| `JonContextMenu().setItems(…).build()` gesture | `ArcMenuInteraction(items:style:)` |
+| `set…ColorTo(…)` methods | `ArcMenuStyle` properties |
+| Objective-C support | Removed |
 
 ## License
 
-JonContextMenu is available under the MIT license. See the LICENSE file for more info.
-
+JonContextMenu is available under the MIT license. See [LICENSE](LICENSE).
