@@ -41,7 +41,7 @@ don't add layers, coordinators, view models, or containers on top of it.
 - No force unwrap, `try!`, or `as!`. No `fatalError` in reachable code.
 - No `nonisolated(unsafe)`, `@unchecked Sendable`, or `@preconcurrency` to silence the compiler.
   UIKit-facing types are `@MainActor`.
-- No magic numbers. Sizes, distances, and timings live in named constants or `ContextMenuStyle`.
+- No magic numbers. Sizes, distances, and timings live in named constants or `ArcMenuStyle`.
 - Public API is minimal and deliberate: `public`, never `open`. Value types by default; `class` only
   where UIKit requires it.
 - Priority when these conflict: **Correctness → Simplicity → Readability → Performance.**
@@ -63,9 +63,10 @@ Public API gets a brief doc comment only when usage isn't obvious from the signa
 ## Testing
 
 - Every rule in `Layout/` and `Interaction/` has a unit test. Views are verified in the Example app.
-- Tests are deterministic, test one behavior each, and are named `test_<context>_<action>_<expectedResult>`.
-- Run: `swift build` for a quick check, and
-  `xcodebuild test -scheme JonContextMenu -destination 'platform=iOS Simulator,name=<device>'` for tests.
+- Tests use Swift Testing, are deterministic, test one behavior each, and have a display name that
+  states the behavior (`@Test("Near the left edge, items fan out to the right")`).
+- The package is iOS-only, so `swift build` on macOS won't work. Run tests with
+  `xcodebuild test -scheme JonContextMenu -destination 'platform=iOS Simulator,name=<device>' -parallel-testing-enabled NO`.
 
 ## Git workflow
 
