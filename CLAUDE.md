@@ -84,3 +84,15 @@ Public API gets a brief doc comment only when usage isn't obvious from the signa
 - Change the minimum code needed. Don't tidy unrelated code in the same diff.
 - Surface any architectural decision and its tradeoff — never make one silently.
 - After implementing, briefly say why this approach and what was rejected.
+
+## Spec workflow
+
+- `/spec-plan <problem>` — a fresh Opus session plans against `origin/development`. The plan is saved to
+  `tasks/` only after it passes every readiness gate and an independent review, at 80%+ confidence.
+- `/spec-execute [plan]` — a fresh Sonnet session implements a ready plan, checks the diff against it,
+  opens a PR into `development`, and deletes the plan. If it can't follow the plan, it marks the plan
+  blocked instead of improvising.
+- `/spec-review <what's wrong>` — an Opus session reviews what `/spec-execute` did and saves a fix plan
+  to `tasks/`.
+
+`tasks/` is git-ignored: plans are working files, and each executed plan is kept in its PR's body.
