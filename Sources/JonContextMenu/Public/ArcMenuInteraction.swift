@@ -16,6 +16,10 @@ public final class ArcMenuInteraction: NSObject, UIInteraction {
     public var style: ArcMenuStyle
     public private(set) weak var view: UIView?
 
+    /// Set by the SwiftUI modifier: its view is an empty overlay, so the content is copied
+    /// from the window and cut to this path instead of snapshotting the view itself.
+    var previewPath: ((CGRect) -> CGPath)?
+
     private struct OpenMenu {
         let items: [ArcMenuItem]
         let overlay: ArcMenuOverlayView
@@ -72,20 +76,12 @@ public final class ArcMenuInteraction: NSObject, UIInteraction {
             bounds: window.bounds.inset(by: window.safeAreaInsets),
             itemCount: items.count
         )
-        let pressedViewFrame = view.convert(view.bounds, to: window)
-        let snapshot = window.resizableSnapshotView(
-            from: pressedViewFrame,
-            afterScreenUpdates: false,
-            withCapInsets: .zero
-        )
-        snapshot?.frame = pressedViewFrame
-
         let overlay = ArcMenuOverlayView(
             frame: window.bounds,
             layout: layout,
             items: items,
             style: style,
-            pressedViewSnapshot: snapshot
+            pressedViewSnapshot: snapshot(of: view, in: window)
         )
         window.addSubview(overlay)
         overlay.present()
@@ -93,6 +89,21 @@ public final class ArcMenuInteraction: NSObject, UIInteraction {
         openMenu = OpenMenu(items: items, overlay: overlay, session: MenuSession(layout: layout))
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         selectionFeedback.prepare()
+    }
+
+    private func snapshot(of view: UIView, in window: UIWindow) -> UIView? {
+        let frame = view.convert(view.bounds, to: window)
+        let snapshot: UIView?
+        if let previewPath {
+            snapshot = window.resizableSnapshotView(from: frame, afterScreenUpdates: false, withCapInsets: .zero)
+            let mask = CAShapeLayer()
+            mask.path = previewPath(CGRect(origin: .zero, size: frame.size))
+            snapshot?.layer.mask = mask
+        } else {
+            snapshot = view.snapshotView(afterScreenUpdates: false)
+        }
+        snapshot?.frame = frame
+        return snapshot
     }
 
     private func moveTouch(of gesture: UILongPressGestureRecognizer) {

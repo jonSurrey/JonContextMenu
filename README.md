@@ -59,6 +59,17 @@ PhotoCard(photo)
     .arcMenu(items)
 ```
 
+While the menu is open, the pressed view stays visible above the dimmed background. In SwiftUI, pass
+the view's shape so it keeps its outline:
+
+```swift
+PhotoCard(photo)
+    .clipShape(RoundedRectangle(cornerRadius: 16))
+    .arcMenu(items, previewShape: RoundedRectangle(cornerRadius: 16))
+```
+
+UIKit views keep their own shape automatically. In both, shadows outside the view's frame aren't shown.
+
 The menu takes over touches on the view it is attached to, so attach it to content that doesn't have
 its own buttons or gestures.
 
