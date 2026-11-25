@@ -8,7 +8,7 @@
 A long-press arc menu for iOS, in the style of Pinterest's. Press and hold a view, slide your finger
 to an item, and let go to select it. Works with UIKit and SwiftUI.
 
-![Demo](https://media.giphy.com/media/31UCkk6Hs1bMVb2bo7/giphy.gif)
+<img src="docs/demo.gif" width="320" alt="Long-pressing a card opens the arc menu; dragging across the items highlights each one and shows its title, and lifting on Delete selects it.">
 
 - Items fan out away from screen edges, so they stay reachable anywhere on the screen.
 - Haptic feedback when the menu opens and when an item is highlighted.
