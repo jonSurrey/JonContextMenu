@@ -33,8 +33,8 @@ struct ArcLayout: Equatable, Sendable {
             .min { itemCenters[$0].distance(to: point) < itemCenters[$1].distance(to: point) }
     }
 
-    /// Above the menu when it fits, otherwise below it; horizontally centered on the touch
-    /// and kept inside the bounds.
+    /// Above the menu when it fits, otherwise below it; horizontally centered on the touch.
+    /// Kept inside the bounds on both axes.
     func titleFrame(for size: CGSize) -> CGRect {
         let width = min(size.width, bounds.width - 2 * ArcMetrics.titleMargin)
         let centeredX = touchPoint.x - width / 2
@@ -43,7 +43,8 @@ struct ArcLayout: Equatable, Sendable {
         let menuTop = highlightedItemCenters.reduce(touchPoint.y) { min($0, $1.y) } - ArcMetrics.itemDiameter / 2
         let menuBottom = highlightedItemCenters.reduce(touchPoint.y) { max($0, $1.y) } + ArcMetrics.itemDiameter / 2
         let yAbove = menuTop - ArcMetrics.titleSpacing - size.height
-        let y = yAbove >= bounds.minY ? yAbove : menuBottom + ArcMetrics.titleSpacing
+        let preferredY = yAbove >= bounds.minY ? yAbove : menuBottom + ArcMetrics.titleSpacing
+        let y = min(preferredY, bounds.maxY - size.height)
 
         return CGRect(x: x, y: y, width: width, height: size.height)
     }
