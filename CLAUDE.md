@@ -87,10 +87,11 @@ Public API gets a brief doc comment only when usage isn't obvious from the signa
 
 ## Spec workflow
 
-- `/spec-plan <problem>` — an Opus session plans the change and saves it to `tasks/` once it reaches
-  80% confidence against this file.
-- `/spec-execute [plan]` — a Sonnet session implements a plan from `tasks/`, opens a PR into
-  `development`, and deletes the plan.
+- `/spec-plan <problem>` — a fresh Opus session plans against `origin/development`. The plan is saved to
+  `tasks/` only after it passes every readiness gate and an independent review, at 80%+ confidence.
+- `/spec-execute [plan]` — a fresh Sonnet session implements a ready plan, checks the diff against it,
+  opens a PR into `development`, and deletes the plan. If it can't follow the plan, it marks the plan
+  blocked instead of improvising.
 - `/spec-review <what's wrong>` — an Opus session reviews what `/spec-execute` did and saves a fix plan
   to `tasks/`.
 
